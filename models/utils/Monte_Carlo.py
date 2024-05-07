@@ -19,7 +19,7 @@ def get_company_data(company_name, start_date, end_date):
         'A', 'AA', 'ABC', 'ABCB', 'ACLS',
         'ACNB', 'ADBE', 'ADP', 'AEG', 'AIR'
     ], f"Company stock data not found"
-    company_string = '..\\..\\data\\' + company_name + '.csv'
+    company_string = '..\\data\\' + company_name + '.csv'
     data = pd.read_csv(company_string, parse_dates=['Date'])
     data['Date'] = pd.to_datetime(data['Date'])
     # drop columns except "Date, close price"

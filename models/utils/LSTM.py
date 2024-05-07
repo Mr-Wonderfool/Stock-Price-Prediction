@@ -83,7 +83,7 @@ class Long_Short_Term_Memory:
             if restore_weights=True, then specify path containing .h5 file
         """
         normalized_data = self.scaler.fit_transform(self.data.reshape(-1, 1))
-        split = int(self.test_percent * len(normalized_data) * (1-self.test_percent))
+        split = int(len(normalized_data) * (1-self.test_percent))
         train_data = normalized_data[:split]
         test_data = normalized_data[split:]
         X_train, y_train = self.data_processing(train_data)
@@ -167,7 +167,8 @@ class Long_Short_Term_Memory:
         """
         if data is None:
             data = self.X_test
-        # data = self.scaler.fit_transform(data.flatten().reshape(-1,1))
+        else:
+            data = self.scaler.fit_transform(data.flatten().reshape(-1,1))
         predicted = self.model.predict(data)
         original_data = self.scaler.inverse_transform(predicted)
         return original_data
