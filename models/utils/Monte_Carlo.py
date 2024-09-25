@@ -19,7 +19,7 @@ def get_company_data(company_name, start_date, end_date):
         'A', 'AA', 'ABC', 'ABCB', 'ACLS',
         'ACNB', 'ADBE', 'ADP', 'AEG', 'AIR'
     ], f"Company stock data not found"
-    company_string = '..\\data\\' + company_name + '.csv'
+    company_string = '..\\..\\data\\raw_data\\' + company_name + '.csv'
     data = pd.read_csv(company_string, parse_dates=['Date'])
     data['Date'] = pd.to_datetime(data['Date'])
     # drop columns except "Date, close price"
@@ -90,9 +90,9 @@ class MonteCarlo:
             plt.legend()
         return portfolio_sim[maxSharpeRatioPoint]
     def build_portfolio(self):
-        itertimes = 100
         portfolio = np.zeros(self.companyNum)
-        for i in range(itertimes):
+        itertimes = 200
+        for _ in range(itertimes):
             optimal = self.build_portfolio_helper()
             portfolio = portfolio + optimal
         portfolio /= itertimes
@@ -149,8 +149,8 @@ class MonteCarlo:
         return analysis
 
 if __name__ == '__main__':
-    end_time = dt(2019, 7, 1)
-    start_time = dt(2004, 1, 1)
+    end_time = dt(2019, 9, 1)
+    start_time = dt(2009, 1, 1)
     company_list = ['A', 'AA', 'ABC', 'ABCB', 'ACLS','ACNB', 'ADBE', 'ADP', 'AEG', 'AIR']
     stock_price, start_price = [], []
     for company_name in company_list:
@@ -165,9 +165,8 @@ if __name__ == '__main__':
     start_price = np.array(start_price).flatten()
     # monte-carlo simulation
     model = MonteCarlo(price_series)
-    start_fund = 100
     portfolio = model.build_portfolio()
     company_dict = {}
     for company in company_list:
-        company_dict[company] = portfolio[company_list.index(company)] * start_fund
+        company_dict[company] = portfolio[company_list.index(company)]
     print(f"{company_dict}")
